@@ -1,0 +1,127 @@
+/* macOS look: translucent window glass, a rounded page card, and pill-shaped controls.
+   The window's native vibrancy (set in main.js) shows through wherever the UI is transparent. */
+
+body.mac {
+  --glass-card-inset: 6px; /* must match viewCardInset in js/webviews.js */
+  --glass-card-radius: 10px; /* must match viewCardRadius in js/webviews.js */
+  --glass-tint: 55%; /* how strongly the site color tints the toolbar glass */
+  --glass-highlight: rgba(255, 255, 255, 0.55);
+  --glass-pill: rgba(255, 255, 255, 0.5);
+  --glass-hover: rgba(0, 0, 0, 0.05);
+  --glass-field: rgba(0, 0, 0, 0.06);
+  --glass-card: rgba(255, 255, 255, 0.55);
+}
+body.mac.dark-mode {
+  --glass-card: rgba(0, 0, 0, 0.2);
+}
+body.mac.dark-theme {
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-pill: rgba(255, 255, 255, 0.14);
+  --glass-hover: rgba(255, 255, 255, 0.08);
+  --glass-field: rgba(255, 255, 255, 0.1);
+}
+
+html:has(> body.mac),
+body.mac,
+body.mac.dark-mode {
+  background-color: transparent;
+}
+
+/* toolbar: tint the glass with the site color instead of painting it solid */
+
+body.mac #navbar {
+  background-color: color-mix(
+    in srgb,
+    var(--theme-background-color) var(--glass-tint),
+    transparent
+  ) !important;
+}
+body.mac #navbar:before {
+  display: none;
+}
+
+/* page card */
+
+body.mac #webviews {
+  margin: 0 var(--glass-card-inset) var(--glass-card-inset);
+  height: calc(
+    100vh - 36px - var(--control-space-top) - var(--glass-card-inset)
+  );
+  border-radius: var(--glass-card-radius);
+  overflow: hidden;
+  background-color: var(--glass-card);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* tabs: draw the background as an inset pill so the 36px layout is unchanged */
+
+body.mac .tab-item.active:not(:only-child),
+body.mac .tab-item:not(.active):hover {
+  background: transparent !important;
+}
+body.mac .tab-item:not(.gu-mirror):before {
+  content: "";
+  position: absolute;
+  inset: 4px 2px;
+  border-radius: 8px;
+  z-index: -1;
+  transition: 0.15s background-color, 0.15s box-shadow;
+}
+body.mac .tab-item:not(.active):not(.gu-mirror):hover:before {
+  background-color: var(--glass-hover);
+}
+body.mac .tab-item.active:not(:only-child):not(.gu-mirror):before {
+  background-color: var(--glass-pill);
+  box-shadow: inset 0 0.5px 0 var(--glass-highlight),
+    0 0.5px 2px rgba(0, 0, 0, 0.12);
+}
+body.mac .tab-item.gu-mirror {
+  border-radius: 8px;
+}
+
+/* address field */
+
+body.mac #tab-editor-input {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background-color: var(--glass-field);
+}
+
+/* search suggestions: a floating glass panel below the toolbar */
+
+body.mac #searchbar {
+  top: calc(var(--control-space-top) + 36px + 2px);
+  left: var(--glass-card-inset);
+  width: calc(100% - var(--glass-card-inset) * 2);
+  padding-left: max(0px, calc(var(--control-space-left) - var(--glass-card-inset)));
+  padding-right: calc(82px + var(--control-space-right) - var(--glass-card-inset));
+  border-radius: 12px;
+  background-color: color-mix(
+    in srgb,
+    var(--theme-background-color) 72%,
+    transparent
+  ) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 0.5px 0 var(--glass-highlight),
+    0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+body.mac #searchbar .searchbar-item {
+  border-radius: 8px;
+}
+
+/* find in page: the bar sits over the toolbar, so hide the toolbar contents instead of covering them */
+
+body.mac #findinpage-bar {
+  background-color: transparent !important;
+}
+body.mac:has(#findinpage-bar:not([hidden])) #navbar > * {
+  visibility: hidden;
+}
+body.mac #findinpage-input {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background-color: var(--glass-field) !important;
+}

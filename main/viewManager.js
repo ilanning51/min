@@ -234,7 +234,7 @@ function createView (existingViewId, id, webPreferences, boundsString, events) {
     }
   })
 
-  view.setBounds(JSON.parse(boundsString))
+  applyViewBounds(view, JSON.parse(boundsString))
 
   viewMap[id] = view
 
@@ -281,9 +281,15 @@ function setView (id, senderContents) {
   }
 }
 
+function applyViewBounds (view, bounds) {
+  const { cornerRadius, ...rect } = bounds
+  view.setBounds(rect)
+  view.setBorderRadius(cornerRadius || 0)
+}
+
 function setBounds (id, bounds) {
   if (viewMap[id]) {
-    viewMap[id].setBounds(bounds)
+    applyViewBounds(viewMap[id], bounds)
   }
 }
 

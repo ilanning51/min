@@ -6,6 +6,11 @@ var settings = require('util/settings/settings.js')
 var placeholderImg = document.getElementById('webview-placeholder')
 
 var hasSeparateTitlebar = settings.get('useSeparateTitlebar')
+
+// on macOS, pages are shown as a rounded card inset from the window edges
+// these values must match #webviews in css/macGlass.css
+const viewCardInset = window.platformType === 'mac' ? 6 : 0
+const viewCardRadius = window.platformType === 'mac' ? 10 : 0
 var windowIsMaximized = false // affects navbar height on Windows
 var windowIsFullscreen = false
 
@@ -167,10 +172,11 @@ const webviews = {
       const viewMargins = webviews.viewMargins
 
       let position = {
-        x: 0 + Math.round(viewMargins[3]),
+        x: viewCardInset + Math.round(viewMargins[3]),
         y: 0 + Math.round(viewMargins[0]) + navbarHeight,
-        width: window.innerWidth - Math.round(viewMargins[1] + viewMargins[3]),
-        height: window.innerHeight - Math.round(viewMargins[0] + viewMargins[2]) - navbarHeight
+        width: window.innerWidth - Math.round(viewMargins[1] + viewMargins[3]) - (viewCardInset * 2),
+        height: window.innerHeight - Math.round(viewMargins[0] + viewMargins[2]) - navbarHeight - viewCardInset,
+        cornerRadius: viewCardRadius
       }
 
       return position
