@@ -292,6 +292,11 @@ const tabColor = {
       return setColor(defaultColors.private[0], defaultColors.private[1])
     }
 
+    // on macOS, the toolbar is the system's translucent material, so it stays neutral instead of taking the site's color
+    if (window.platformType === 'mac') {
+      return setColor('transparent', window.isDarkMode ? 'white' : 'black')
+    }
+
     if (tabColor.useSiteTheme) {
       // use the theme color
       if (tab.themeColor && tab.themeColor.color) {
