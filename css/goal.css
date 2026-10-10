@@ -1,0 +1,101 @@
+/* optional session goal: a centered prompt and a quiet label in the toolbar */
+
+@keyframes goal-prompt-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes goal-done {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#goal-prompt {
+  position: fixed;
+  top: var(--popup-top, 16vh);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: var(--popup-width, min(640px, calc(100vw - 48px)));
+  height: var(--popup-input-height, 54px);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  background-color: var(--glass-panel, rgb(250, 250, 250));
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  box-shadow: inset 0 0.5px 0 var(--glass-highlight, rgba(255, 255, 255, 0.7)),
+    0 0 0 0.5px var(--glass-border, rgba(0, 0, 0, 0.1)),
+    0 16px 48px rgba(0, 0, 0, 0.22);
+  z-index: 10;
+  animation: goal-prompt-in 0.32s cubic-bezier(0.34, 1.45, 0.64, 1);
+  -webkit-app-region: no-drag;
+}
+.dark-mode #goal-prompt {
+  background-color: var(--glass-panel, rgb(44, 44, 46));
+  color: white;
+}
+
+#goal-input {
+  flex: 1;
+  font-size: 20px;
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+  -webkit-user-select: auto;
+}
+#goal-input::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.4;
+}
+
+#goal-pill {
+  /* line up with the 36px tab row */
+  align-self: flex-start;
+  height: 24px;
+  margin: 6px 0.5em 0;
+  max-width: 260px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.55;
+  transition: 0.15s opacity, 0.15s background-color;
+  -webkit-app-region: no-drag;
+}
+#goal-pill:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.dark-theme #goal-pill:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+#goal-pill.done {
+  opacity: 1;
+  color: rgb(40, 167, 69);
+  font-weight: 600;
+  animation: goal-done 0.4s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #goal-prompt,
+  #goal-pill.done {
+    animation: none;
+  }
+}

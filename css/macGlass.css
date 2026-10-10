@@ -123,7 +123,8 @@ body.mac.is-edit-mode:not(.fullscreen):not(.separate-titlebar)
   height: 100%;
   -webkit-app-region: drag;
 }
-body.mac.is-edit-mode #overlay {
+body.mac.is-edit-mode #overlay,
+body.mac.is-goal-mode #overlay {
   background: var(--popup-backdrop);
   animation: mac-fade-in 0.2s ease-out;
 }
@@ -203,7 +204,8 @@ body.mac #findinpage-input {
 @media (prefers-reduced-motion: reduce) {
   body.mac #tab-editor,
   body.mac #searchbar,
-  body.mac.is-edit-mode #overlay {
+  body.mac.is-edit-mode #overlay,
+  body.mac.is-goal-mode #overlay {
     animation: none;
   }
 }

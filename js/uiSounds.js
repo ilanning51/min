@@ -15,7 +15,8 @@ const sounds = {
   tabSwitch: [[0, 1800, 1600, 0.025, 0.06, 'triangle']],
   back: [[0, 900, 700, 0.04, 0.1, 'triangle']],
   forward: [[0, 700, 900, 0.04, 0.1, 'triangle']],
-  bookmark: [[0, 1046, 1046, 0.12, 0.1, 'sine'], [0.06, 1568, 1568, 0.16, 0.08, 'sine']]
+  bookmark: [[0, 1046, 1046, 0.12, 0.1, 'sine'], [0.06, 1568, 1568, 0.16, 0.08, 'sine']],
+  complete: [[0, 523, 523, 0.14, 0.13, 'sine'], [0.08, 659, 659, 0.14, 0.12, 'sine'], [0.16, 784, 784, 0.14, 0.12, 'sine'], [0.24, 1047, 1047, 0.35, 0.12, 'sine']]
 }
 
 // sounds triggered by the same action (such as a new tab also opening the searchbar) shouldn't stack
