@@ -162,6 +162,7 @@
     "settingsAdditionalFeaturesHeading": "Additional Features",
     "settingsUserscriptsToggle": "Enable user scripts",
     "settingsShowDividerToggle": "Show divider between tabs",
+    "settingsSearchSuggestionsToggle": "Show history and suggestions while searching",
     "settingsUISoundsToggle": "Play interface sounds",
     "settingsLanguageSelection": "Language: ",
     "settingsSeparateTitlebarToggle": "Use separate title bar",
