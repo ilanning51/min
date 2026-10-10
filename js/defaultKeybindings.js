@@ -7,6 +7,7 @@ var tabEditor = require('navbar/tabEditor.js')
 var urlParser = require('util/urlParser.js')
 var keyMapModule = require('util/keyMap.js')
 var settings = require('util/settings/settings.js')
+var uiSounds = require('uiSounds.js')
 
 var keyMap = keyMapModule.userKeyMap(settings.get('keyMap'))
 
@@ -68,6 +69,10 @@ const defaultKeybindings = {
     keybindings.defineShortcut('enterEditMode', function (e) {
       tabEditor.show(tabs.getSelected())
       return false
+    })
+
+    keybindings.defineShortcut('openSearch', function (e) {
+      tabEditor.show(tabs.getSelected())
     })
 
     keybindings.defineShortcut('runShortcut', function (e) {
@@ -158,10 +163,12 @@ const defaultKeybindings = {
     })
 
     keybindings.defineShortcut('goBack', function (d) {
+      uiSounds.play('back')
       webviews.callAsync(tabs.getSelected(), 'goBack')
     })
 
     keybindings.defineShortcut('goForward', function (d) {
+      uiSounds.play('forward')
       webviews.callAsync(tabs.getSelected(), 'goForward')
     })
 

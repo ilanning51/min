@@ -2,6 +2,7 @@ const places = require('places/places.js')
 const bookmarkEditor = require('searchbar/bookmarkEditor.js')
 const searchbar = require('searchbar/searchbar.js')
 const searchbarPlugins = require('searchbar/searchbarPlugins.js')
+const uiSounds = require('uiSounds.js')
 
 const bookmarkStar = {
   create: function () {
@@ -18,6 +19,7 @@ const bookmarkStar = {
     return star
   },
   onClick: function (star) {
+    uiSounds.play('bookmark')
     var tabId = star.getAttribute('data-tab')
 
     searchbarPlugins.clearAll()

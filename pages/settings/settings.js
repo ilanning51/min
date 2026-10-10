@@ -4,6 +4,7 @@ var contentTypeBlockingContainer = document.getElementById('content-type-blockin
 var banner = document.getElementById('restart-required-banner')
 var siteThemeCheckbox = document.getElementById('checkbox-site-theme')
 var showDividerCheckbox = document.getElementById('checkbox-show-divider')
+var uiSoundsCheckbox = document.getElementById('checkbox-ui-sounds')
 var userscriptsCheckbox = document.getElementById('checkbox-userscripts')
 var userscriptsShowDirectorySection = document.getElementById('userscripts-show-directory')
 var separateTitlebarCheckbox = document.getElementById('checkbox-separate-titlebar')
@@ -229,6 +230,16 @@ settings.get('siteTheme', function (value) {
 
 siteThemeCheckbox.addEventListener('change', function (e) {
   settings.set('siteTheme', this.checked)
+})
+
+/* interface sounds setting */
+
+settings.get('uiSounds', function (value) {
+  uiSoundsCheckbox.checked = value !== false
+})
+
+uiSoundsCheckbox.addEventListener('change', function (e) {
+  settings.set('uiSounds', this.checked)
 })
 
 /* startup settings */

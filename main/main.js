@@ -198,17 +198,11 @@ function createWindowWithBounds (bounds, customArgs) {
     minWidth: (process.platform === 'win32' ? 400 : 320), // controls take up more horizontal space on Windows
     minHeight: 350,
     titleBarStyle: settings.get('useSeparateTitlebar') ? 'default' : 'hidden',
-    trafficLightPosition: { x: 12, y: 10 },
+    trafficLightPosition: { x: 16, y: 18 }, // centered in the 52px toolbar (css/macGlass.css)
     icon: __dirname + '/icons/icon256.png',
     frame: settings.get('useSeparateTitlebar'),
     alwaysOnTop: settings.get('windowAlwaysOnTop'),
     backgroundColor: '#fff', // the value of this is ignored, but setting it seems to work around https://github.com/electron/electron/issues/10559
-    // on macOS, show the native translucent window material behind the UI
-    ...(process.platform === 'darwin' ? {
-      vibrancy: 'sidebar',
-      visualEffectState: 'followWindow',
-      backgroundColor: '#00000000'
-    } : {})
   })
 
   // windows and linux always use a menu button in the upper-left corner instead
@@ -234,10 +228,6 @@ function createWindowWithBounds (bounds, customArgs) {
       ]
     }
   })
-  if (process.platform === 'darwin') {
-    // let the window's vibrancy show through the browser UI
-    mainView.setBackgroundColor('#00000000')
-  }
   mainView.webContents.loadURL(browserPage)
 
   if (bounds.maximized) {

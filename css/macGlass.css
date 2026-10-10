@@ -1,25 +1,36 @@
-/* macOS look: the toolbar is the window's native translucent material (vibrancy is set in main.js),
-   pages fill the window edge to edge, and controls use the system font and rounded shapes. */
+/* macOS look: a tall toolbar that blends into the page, the system font,
+   and a centered glass popup for searching (shown in edit mode). */
 
 body.mac {
-  --glass-highlight: rgba(255, 255, 255, 0.6);
-  --glass-pill: rgba(255, 255, 255, 0.55);
-  --glass-hover: rgba(0, 0, 0, 0.05);
-  --glass-field: rgba(0, 0, 0, 0.05);
-  --glass-panel: rgba(246, 246, 246, 0.82);
-  --glass-separator: rgba(0, 0, 0, 0.1);
-  --content-background: #fff;
-}
-body.mac.dark-theme {
-  --glass-highlight: rgba(255, 255, 255, 0.12);
-  --glass-pill: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(255, 255, 255, 0.06);
-  --glass-field: rgba(255, 255, 255, 0.08);
-  --glass-panel: rgba(40, 40, 42, 0.82);
-  --glass-separator: rgba(0, 0, 0, 0.5);
+  /* 8px above and below the 36px tab row makes a 52px toolbar (also set in js/webviews.js and main.js) */
+  --control-space-top: 8px;
+  --control-space-bottom: 8px;
+
+  /* matches the toolbar color set in js/navbar/tabColor.js */
+  --content-background: rgb(255, 255, 255);
+
+  --popup-width: min(640px, calc(100vw - 48px));
+  --popup-top: 16vh;
+  --popup-input-height: 54px;
+  --popup-gap: 8px;
+
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --glass-pill: rgba(0, 0, 0, 0.06);
+  --glass-hover: rgba(0, 0, 0, 0.04);
+  --glass-panel: rgba(250, 250, 250, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --popup-backdrop: rgba(0, 0, 0, 0.12);
 }
 body.mac.dark-mode {
   --content-background: rgb(30, 30, 30);
+}
+body.mac.dark-theme {
+  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --glass-pill: rgba(255, 255, 255, 0.1);
+  --glass-hover: rgba(255, 255, 255, 0.06);
+  --glass-panel: rgba(44, 44, 46, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.5);
+  --popup-backdrop: rgba(0, 0, 0, 0.35);
 }
 
 body.mac * {
@@ -27,33 +38,18 @@ body.mac * {
   letter-spacing: normal;
 }
 
-html:has(> body.mac),
-body.mac,
-body.mac.dark-mode {
-  background-color: transparent;
-}
+/* toolbar: same color as the page, with no dividing line */
 
-/* toolbar: let the window material show through (private tabs keep a tint) */
-
-body.mac #navbar {
-  background-color: color-mix(
-    in srgb,
-    var(--theme-background-color) 55%,
-    transparent
-  ) !important;
-}
 body.mac #navbar:before {
-  background: var(--glass-separator);
+  display: none;
 }
 body.mac .navbar-action-button {
   font-size: 1.25em !important;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 body.mac .navbar-action-button:disabled {
   opacity: 0.25;
 }
-
-/* page area: solid, like the content of any other Mac app */
 
 body.mac #webviews {
   background-color: var(--content-background);
@@ -68,21 +64,19 @@ body.mac .tab-item:not(.active):hover {
 body.mac .tab-item:not(.gu-mirror):before {
   content: "";
   position: absolute;
-  inset: 5px 2px;
-  border-radius: 7px;
+  inset: 4px 2px;
+  border-radius: 8px;
   z-index: -1;
-  transition: 0.15s background-color, 0.15s box-shadow;
+  transition: 0.15s background-color;
 }
 body.mac .tab-item:not(.active):not(.gu-mirror):hover:before {
   background-color: var(--glass-hover);
 }
 body.mac .tab-item.active:not(:only-child):not(.gu-mirror):before {
   background-color: var(--glass-pill);
-  box-shadow: inset 0 0.5px 0 var(--glass-highlight),
-    0 0.5px 1.5px rgba(0, 0, 0, 0.1);
 }
 body.mac .tab-item.gu-mirror {
-  border-radius: 7px;
+  border-radius: 8px;
 }
 body.mac .tab-item .title {
   font-size: 13px;
@@ -94,43 +88,107 @@ body.mac .tab-item.active.has-url:hover .title {
   transform: scale(0.8462) translateY(-12%);
 }
 body.mac .tab-item:not(.active) .title {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-/* address field */
+/* search popup: the address field and its suggestions float in the middle of the window */
 
-body.mac #tab-editor-input {
-  font-size: 13px;
-  height: 26px;
-  padding: 0 10px;
-  border-radius: 7px;
-  background-color: var(--glass-field);
+@keyframes mac-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes mac-fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
-/* search suggestions: a floating glass panel below the toolbar */
+/* the editor no longer takes over the tab row, so keep the toolbar laid out as usual */
+body.mac.is-edit-mode .tab-item {
+  opacity: 1;
+}
+body.mac.is-edit-mode #toolbar-navigation-buttons {
+  display: block;
+}
+body.mac.is-edit-mode:not(.fullscreen):not(.separate-titlebar)
+  #mac-window-drag-area {
+  margin-left: calc(var(--control-space-left) * -1);
+  width: calc(var(--control-space-left) + 1.25em);
+  height: 100%;
+  -webkit-app-region: drag;
+}
+body.mac.is-edit-mode #overlay {
+  background: var(--popup-backdrop);
+  animation: mac-fade-in 0.2s ease-out;
+}
 
+body.mac #tab-editor,
 body.mac #searchbar {
-  top: calc(var(--control-space-top) + 36px + 4px);
-  left: 8px;
-  width: calc(100% - 16px);
-  padding: 4px calc(82px + var(--control-space-right) - 8px) 4px
-    max(0px, calc(var(--control-space-left) - 8px));
-  border-radius: 12px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: var(--popup-width);
+  border-radius: 16px;
   background-color: var(--glass-panel) !important;
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   backdrop-filter: blur(30px) saturate(180%);
   box-shadow: inset 0 0.5px 0 var(--glass-highlight),
-    0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.18);
+    0 0 0 0.5px var(--glass-border), 0 16px 48px rgba(0, 0, 0, 0.22);
+  -webkit-app-region: no-drag;
+}
+
+body.mac #tab-editor {
+  top: var(--popup-top);
+  height: var(--popup-input-height);
+  padding: 0 10px 0 20px;
+  z-index: 10;
+  animation: mac-popup-in 0.32s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+body.mac #tab-editor-input {
+  font-size: 20px;
+  height: 100%;
+  line-height: normal;
+}
+body.mac #tab-editor-input::-webkit-input-placeholder {
+  line-height: normal;
+}
+
+body.mac #searchbar {
+  top: calc(var(--popup-top) + var(--popup-input-height) + var(--popup-gap));
+  max-height: calc(
+    100vh - var(--popup-top) - var(--popup-input-height) - var(--popup-gap) -
+      24px
+  );
+  padding: 6px;
+  animation: mac-popup-in 0.36s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+/* hide the suggestions panel while it has nothing to show */
+body.mac
+  #searchbar:not(:has(.searchbar-plugin-container > *, .top-answer-area > *)) {
+  visibility: hidden;
 }
 body.mac #searchbar .searchbar-item {
-  border-radius: 7px;
+  border-radius: 10px;
+  padding-left: 2.5em;
+}
+body.mac #searchbar .searchbar-item > i,
+body.mac #searchbar .searchbar-item .icon-image {
+  left: 0.85em;
+  right: auto;
+}
+body.mac #searchbar .searchbar-heading {
+  padding-left: 0.85em;
 }
 
 /* find in page: the bar sits over the toolbar, so hide the toolbar contents instead of covering them */
 
-body.mac #findinpage-bar {
-  background-color: transparent !important;
-}
 body.mac:has(#findinpage-bar:not([hidden])) #navbar > * {
   visibility: hidden;
 }
@@ -138,6 +196,14 @@ body.mac #findinpage-input {
   font-size: 13px;
   height: 26px;
   padding: 0 10px;
-  border-radius: 7px;
-  background-color: var(--glass-field) !important;
+  border-radius: 8px;
+  background-color: var(--glass-pill) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.mac #tab-editor,
+  body.mac #searchbar,
+  body.mac.is-edit-mode #overlay {
+    animation: none;
+  }
 }

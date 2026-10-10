@@ -9,6 +9,7 @@ var defaultKeyMap = {
   goBack: 'mod+left',
   goForward: 'mod+right',
   enterEditMode: ['mod+l', 'mod+k'],
+  openSearch: '/',
   runShortcut: 'mod+e',
   completeSearchbar: 'mod+enter',
   copyPageURL: 'shift+mod+c',

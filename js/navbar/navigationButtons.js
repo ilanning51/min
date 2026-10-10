@@ -1,4 +1,5 @@
 const webviews = require('webviews.js')
+const uiSounds = require('uiSounds.js')
 
 var navigationButtons = {
   tabsList: document.getElementById('tabs-inner'),
@@ -33,10 +34,12 @@ var navigationButtons = {
     navigationButtons.container.hidden = false
 
     navigationButtons.backButton.addEventListener('click', function (e) {
+      uiSounds.play('back')
       webviews.goBackIgnoringRedirects(tabs.getSelected())
     })
 
     navigationButtons.forwardButton.addEventListener('click', function () {
+      uiSounds.play('forward')
       webviews.callAsync(tabs.getSelected(), 'goForward')
     })
 
