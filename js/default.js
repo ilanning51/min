@@ -26,6 +26,12 @@ if (navigator.platform === 'MacIntel') {
   window.platformType = 'linux'
 }
 
+// the Apple-style look in css/appleStyle.css (tall toolbar, centered search popup)
+window.usesAppleStyle = (window.platformType === 'mac' || window.platformType === 'windows')
+if (window.usesAppleStyle) {
+  document.body.classList.add('apple-style')
+}
+
 if (navigator.maxTouchPoints > 0) {
   document.body.classList.add('touch')
 }
