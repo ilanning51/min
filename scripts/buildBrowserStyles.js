@@ -21,7 +21,7 @@ const modules = [
   'css/passwordCapture.css',
   'css/passwordViewer.css',
   'css/goal.css',
-  'css/macGlass.css',
+  'css/appleStyle.css',
   'node_modules/dragula/dist/dragula.min.css'
 ]
 

@@ -55,8 +55,8 @@ const tabEditor = {
       }
     }
 
-    /* animation (on macOS, the editor is a centered popup with its own animation in css/macGlass.css) */
-    if (tabs.count() > 1 && window.platformType !== 'mac') {
+    /* animation (with the Apple-style look, the editor is a centered popup with its own animation in css/appleStyle.css) */
+    if (tabs.count() > 1 && !window.usesAppleStyle) {
       requestAnimationFrame(function () {
         var item = document.querySelector(`.tab-item[data-tab="${tabId}"]`)
         var originCoordinates = item.getBoundingClientRect()

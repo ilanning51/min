@@ -12,9 +12,9 @@ const defaultColors = {
   private: ['rgb(58, 44, 99)', 'white'],
   lightMode: ['rgb(255, 255, 255)', 'black'],
   darkMode: ['rgb(33, 37, 43)', 'white'],
-  // these match --content-background in css/macGlass.css
-  macLightMode: ['rgb(255, 255, 255)', 'black'],
-  macDarkMode: ['rgb(30, 30, 30)', 'white']
+  // these match --content-background in css/appleStyle.css
+  appleStyleLightMode: ['rgb(255, 255, 255)', 'black'],
+  appleStyleDarkMode: ['rgb(30, 30, 30)', 'white']
 }
 
 function getHours () {
@@ -295,9 +295,9 @@ const tabColor = {
       return setColor(defaultColors.private[0], defaultColors.private[1])
     }
 
-    // on macOS, the toolbar matches the page background instead of taking the site's color
-    if (window.platformType === 'mac') {
-      const colors = window.isDarkMode ? defaultColors.macDarkMode : defaultColors.macLightMode
+    // with the Apple-style look, the toolbar matches the page background instead of taking the site's color
+    if (window.usesAppleStyle) {
+      const colors = window.isDarkMode ? defaultColors.appleStyleDarkMode : defaultColors.appleStyleLightMode
       return setColor(colors[0], colors[1])
     }
 

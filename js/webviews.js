@@ -159,10 +159,10 @@ const webviews = {
       }
     } else {
       var navbarHeight = 36
-      if (!hasSeparateTitlebar && (window.platformType === 'linux' || window.platformType === 'windows') && !windowIsMaximized && !windowIsFullscreen) {
+      if (window.usesAppleStyle) {
+        navbarHeight = 52 // see --control-space-top and --control-space-bottom in css/appleStyle.css
+      } else if (!hasSeparateTitlebar && window.platformType === 'linux' && !windowIsMaximized && !windowIsFullscreen) {
         navbarHeight = 48
-      } else if (window.platformType === 'mac') {
-        navbarHeight = 52 // see --control-space-top and --control-space-bottom in css/macGlass.css
       }
 
       const viewMargins = webviews.viewMargins
