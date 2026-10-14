@@ -5,6 +5,7 @@ var urlParser = require('util/urlParser.js')
 var keyboardNavigationHelper = require('util/keyboardNavigationHelper.js')
 var bookmarkStar = require('navbar/bookmarkStar.js')
 var contentBlockingToggle = require('navbar/contentBlockingToggle.js')
+var uiSounds = require('uiSounds.js')
 
 const tabEditor = {
   container: document.getElementById('tab-editor'),
@@ -15,6 +16,10 @@ const tabEditor = {
     /* Edit mode is not available in modal mode. */
     if (modalMode.enabled()) {
       return
+    }
+
+    if (!tabEditor.isShown) {
+      uiSounds.play('pop')
     }
 
     tabEditor.container.hidden = false
@@ -50,8 +55,8 @@ const tabEditor = {
       }
     }
 
-    /* animation */
-    if (tabs.count() > 1) {
+    /* animation (on macOS, the editor is a centered popup with its own animation in css/macGlass.css) */
+    if (tabs.count() > 1 && window.platformType !== 'mac') {
       requestAnimationFrame(function () {
         var item = document.querySelector(`.tab-item[data-tab="${tabId}"]`)
         var originCoordinates = item.getBoundingClientRect()
@@ -71,6 +76,10 @@ const tabEditor = {
     }
   },
   hide: function () {
+    if (tabEditor.isShown) {
+      uiSounds.play('dismiss')
+    }
+
     tabEditor.container.hidden = true
     tabEditor.container.removeAttribute('style')
     tabEditor.isShown = false

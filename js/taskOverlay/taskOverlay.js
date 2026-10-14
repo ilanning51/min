@@ -7,6 +7,7 @@ var tabBar = require('navbar/tabBar.js')
 var tabEditor = require('navbar/tabEditor.js')
 var focusMode = require('focusMode.js')
 var modalMode = require('modalMode.js')
+var uiSounds = require('uiSounds.js')
 var keyboardNavigationHelper = require('util/keyboardNavigationHelper.js')
 var Sortable = require('sortablejs')
 
@@ -185,6 +186,10 @@ var taskOverlay = {
 
     webviews.requestPlaceholder('taskOverlay')
 
+    if (!this.isShown) {
+      uiSounds.play('pop')
+    }
+
     document.body.classList.add('task-overlay-is-shown')
     document.body.setAttribute('data-context', 'taskOverlay')
 
@@ -237,6 +242,7 @@ var taskOverlay = {
 
   hide: function () {
     if (this.isShown) {
+      uiSounds.play('dismiss')
       this.isShown = false
       this.overlayElement.hidden = true
 

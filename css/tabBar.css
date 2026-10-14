@@ -1,6 +1,6 @@
 #navbar {
   display: flex;
-  height: calc(36px + var(--control-space-top));
+  height: calc(36px + var(--control-space-top) + var(--control-space-bottom, 0px));
   transition: 0.2s background-color;
   width: 100%;
   -webkit-user-select: none;

@@ -167,21 +167,28 @@ require('sessionRestore.js').initialize()
 require('bookmarkConverter.js').initialize()
 require('newTabPage.js').initialize()
 require('macHandoff.js').initialize()
+require('uiSounds.js').initialize()
+require('goal.js').initialize()
 
 // default searchbar plugins
 
-require('searchbar/placesPlugin.js').initialize()
-require('searchbar/instantAnswerPlugin.js').initialize()
+// suggestions that appear on their own (history, bookmarks, top sites, web suggestions, notices) are off unless enabled in settings
+if (require('util/settings/settings.js').get('searchSuggestions') === true) {
+  require('searchbar/placesPlugin.js').initialize()
+  require('searchbar/instantAnswerPlugin.js').initialize()
+  require('searchbar/searchSuggestionsPlugin.js').initialize()
+  require('searchbar/placeSuggestionsPlugin.js').initialize()
+  require('searchbar/updateNotifications.js').initialize()
+  require('searchbar/restoreTaskPlugin.js').initialize()
+  require('searchbar/developmentModeNotification.js').initialize()
+  require('searchbar/shortcutButtons.js').initialize()
+}
+
+// tools that only respond to something typed on purpose (!commands, math)
 require('searchbar/bangsPlugin.js').initialize()
 require('searchbar/customBangs.js').initialize()
-require('searchbar/searchSuggestionsPlugin.js').initialize()
-require('searchbar/placeSuggestionsPlugin.js').initialize()
-require('searchbar/updateNotifications.js').initialize()
-require('searchbar/restoreTaskPlugin.js').initialize()
 require('searchbar/bookmarkManager.js').initialize()
 require('searchbar/historyViewer.js').initialize()
-require('searchbar/developmentModeNotification.js').initialize()
-require('searchbar/shortcutButtons.js').initialize()
 require('searchbar/calculatorPlugin.js').initialize()
 
 // once everything's loaded, start the session
