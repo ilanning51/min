@@ -10,7 +10,7 @@ var defaultKeyMap = {
   goForward: 'mod+right',
   enterEditMode: ['mod+l', 'mod+k'],
   openSearch: '/',
-  setGoal: 'shift+mod+i',
+  setGoal: 'shift+mod+g',
   runShortcut: 'mod+e',
   completeSearchbar: 'mod+enter',
   copyPageURL: 'shift+mod+c',
